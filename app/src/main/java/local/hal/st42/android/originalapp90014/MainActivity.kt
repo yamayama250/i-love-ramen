@@ -10,34 +10,42 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import local.hal.st42.android.originalapp90014.features.ramen.presentation.create.CreateScreen
+import local.hal.st42.android.originalapp90014.features.ramen.presentation.detail.DetailScreen
+import local.hal.st42.android.originalapp90014.features.ramen.presentation.edit.EditScreen
+import local.hal.st42.android.originalapp90014.features.ramen.presentation.list.ListScreen
 import local.hal.st42.android.originalapp90014.ui.theme.OriginalApp90014Theme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            OriginalApp90014Theme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
-            }
+            OriginalApp90014()
         }
     }
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
+fun OriginalApp90014() {
+    val navController = rememberNavController()
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
     OriginalApp90014Theme {
-        Greeting("Android")
+        NavHost(navController = navController, startDestination = "list") {
+            composable("list") {
+                ListScreen(navController = navController)
+            }
+            composable("create") {
+                CreateScreen(navController = navController)
+            }
+            composable("detail") {
+                DetailScreen(navController = navController)
+            }
+            composable("edit") {
+                EditScreen(navController = navController)
+            }
+        }
     }
 }
