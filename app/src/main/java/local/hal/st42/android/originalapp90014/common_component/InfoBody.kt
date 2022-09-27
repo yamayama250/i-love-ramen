@@ -14,12 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import local.hal.st42.android.originalapp90014.RamenState
+import java.sql.Date
 import java.util.*
 
 @Composable
-fun InfoBody() {
+fun InfoBody(ramenState: RamenState) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
+    calendar.timeInMillis = ramenState.visitDate.time
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH) + 1
     val day = calendar.get(Calendar.DATE)
@@ -31,26 +34,24 @@ fun InfoBody() {
         { _: DatePicker, yyyy: Int, mm: Int, dd: Int ->
             date = "${yyyy}年${mm + 1}月${dd}日"
             calendar.set(yyyy, mm, dd)
+            val millis = calendar.timeInMillis
+            ramenState.visitDate = Date(millis)
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE)
     )
 
     Column(
         modifier = Modifier.padding(horizontal = 24.dp)
     ) {
-        var name by remember { mutableStateOf("") }
-        var address by remember { mutableStateOf("") }
-        var note by remember { mutableStateOf("") }
-
         OutlinedTextField(
-            value = name,
-            onValueChange = { name = it },
+            value = ramenState.name,
+            onValueChange = { ramenState.name = it },
             label = { Text(text = "店名") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
         OutlinedTextField(
-            value = address,
-            onValueChange = { address = it },
+            value = ramenState.address,
+            onValueChange = { ramenState.address = it },
             label = { Text(text = "住所") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
@@ -70,12 +71,12 @@ fun InfoBody() {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                ShowDropdownMenu()
+                ShowDropdownMenu(ramenState)
             }
         }
         OutlinedTextField(
-            value = note,
-            onValueChange = { note = it },
+            value = ramenState.note,
+            onValueChange = { ramenState.note = it },
             label = { Text(text = "メモ") },
             modifier = Modifier
                 .weight(1.0f, true)
@@ -86,12 +87,11 @@ fun InfoBody() {
 }
 
 @Composable
-fun ShowDropdownMenu() {
+fun ShowDropdownMenu(ramenState: RamenState) {
     var expanded by remember { mutableStateOf(false)}
-    var category by remember { mutableStateOf("未選択") }
 
     Text(
-        text = "カテゴリー：$category",
+        text = "カテゴリー：${ramenState.category}",
         fontSize = 12.sp,
         modifier = Modifier.clickable { expanded = true }
     )
@@ -100,13 +100,13 @@ fun ShowDropdownMenu() {
         onDismissRequest = { expanded = false }
     ) {
         DropdownMenuItem(onClick = {
-            category = "　家系"
+            ramenState.category = "家系　"
             expanded = false
         }) {
             Text(text = "家系")
         }
         DropdownMenuItem(onClick = {
-            category = "二郎系"
+            ramenState.category = "二郎系"
             expanded = false
         }) {
             Text(text = "二郎系")

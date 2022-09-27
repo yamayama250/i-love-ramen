@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
 @Composable
-fun DSAppBar(navController: NavController) {
+fun DSAppBar(navController: NavController, id: Int) {
     TopAppBar(
         elevation = 0.dp,
         title = { Text(text = "店舗詳細") },
@@ -22,7 +22,7 @@ fun DSAppBar(navController: NavController) {
             }
         },
         actions = {
-            IconButton(onClick = { navController.navigate("edit") }) {
+            IconButton(onClick = { navController.navigate("edit/$id") }) {
                 Icon(Icons.Default.Edit, contentDescription = "")
             }
         }

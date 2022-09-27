@@ -2,18 +2,26 @@ package local.hal.st42.android.originalapp90014.features.ramen.presentation.list
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 import local.hal.st42.android.originalapp90014.features.ramen.presentation.list.component.*
+import local.hal.st42.android.originalapp90014.features.ramen.viewmodel.MainViewModel
+import local.hal.st42.android.originalapp90014.features.ramen.viewmodel.MainViewModelFactory
 
 @Composable
-fun ListScreen(navController: NavController) {
+fun ListScreen(
+    navController: NavController,
+    factory: MainViewModelFactory,
+    mainViewModel: MainViewModel = viewModel(factory = factory)
+) {
     Scaffold(
         topBar = { AppBar() },
         floatingActionButton = {
@@ -24,6 +32,9 @@ fun ListScreen(navController: NavController) {
             )
         }
     ) {
+        val ramenList = mainViewModel.ramenList.collectAsState(initial = emptyList())
+        val ramens = ramenList.value
+
         Column {
             var selectedTabIndex by remember { mutableStateOf(0) }
 
@@ -75,21 +86,25 @@ fun ListScreen(navController: NavController) {
             LazyColumn {
                 when(selectedTabIndex) {
                     0 -> {
-                        items(5) { item ->
-                            ListColumn(navController)
+                        items(ramens) { ramen ->
+                            ListColumn(navController, ramen)
                             Divider()
                         }
                     }
                     1 -> {
-                        items(2) { item ->
-                            ListColumn(navController)
-                            Divider()
+                        items(ramens) { ramen ->
+                            if(ramen.category == "家系　") {
+                                ListColumn(navController, ramen)
+                                Divider()
+                            }
                         }
                     }
                     2 -> {
-                        items(3) { item ->
-                            ListColumn(navController)
-                            Divider()
+                        items(ramens) { ramen ->
+                            if(ramen.category == "二郎系") {
+                                ListColumn(navController, ramen)
+                                Divider()
+                            }
                         }
                     }
                 }

@@ -5,9 +5,9 @@ import androidx.room.PrimaryKey
 import java.sql.Date
 
 @Entity(tableName = "ramen_shops")
-data class RamenShop(
+data class Ramen(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int?,
     val name: String,
     val address: String,
     val visitDate: Date,

@@ -10,11 +10,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import local.hal.st42.android.originalapp90014.features.ramen.model.Ramen
 
 @Composable
-fun ListColumn(navController: NavController) {
+fun ListColumn(navController: NavController, ramen: Ramen) {
     TextButton(
-        onClick = { navController.navigate("detail") },
+        onClick = { navController.navigate("detail/${ramen.id}") },
     ) {
         Column(
             Modifier
@@ -26,17 +27,17 @@ fun ListColumn(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "ここが店名なんですよ屋")
+                Text(text = ramen.name)
                 Text(
                     fontSize = 10.sp,
-                    text = "カテゴリ"
+                    text = ramen.category
                 )
             }
             Text(
                 modifier = Modifier.padding(top = 4.dp),
                 color = Color.Black,
                 fontSize = 10.sp,
-                text = "住所県住所市住所区1-1"
+                text = ramen.address
             )
         }
     }
