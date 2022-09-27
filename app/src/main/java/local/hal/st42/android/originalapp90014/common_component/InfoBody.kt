@@ -1,5 +1,6 @@
 package local.hal.st42.android.originalapp90014.common_component
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.clickable
@@ -16,10 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import local.hal.st42.android.originalapp90014.RamenState
 import java.sql.Date
+import java.text.SimpleDateFormat
 import java.util.*
 
+@SuppressLint("SimpleDateFormat")
 @Composable
 fun InfoBody(ramenState: RamenState) {
+    val visitSdf = SimpleDateFormat("yyyy年MM月dd日")
+
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
     calendar.timeInMillis = ramenState.visitDate.time
@@ -28,6 +33,8 @@ fun InfoBody(ramenState: RamenState) {
     val day = calendar.get(Calendar.DATE)
 
     var date by remember { mutableStateOf("${year}年${month}月${day}日") }
+    // 一度Stateから引っ張ってこないと描写されない？のでゴリ押し
+    date = visitSdf.format(ramenState.visitDate)
 
     val datePickerDialog = DatePickerDialog(
         context,
