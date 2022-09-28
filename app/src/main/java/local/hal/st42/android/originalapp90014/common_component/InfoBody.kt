@@ -5,10 +5,7 @@ import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,9 +17,10 @@ import java.sql.Date
 import java.text.SimpleDateFormat
 import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("SimpleDateFormat")
 @Composable
-fun InfoBody(ramenState: RamenState) {
+fun InfoBody(ramenState: RamenState, modifier: Modifier = Modifier) {
     val visitSdf = SimpleDateFormat("yyyy年MM月dd日")
 
     val context = LocalContext.current
@@ -47,7 +45,7 @@ fun InfoBody(ramenState: RamenState) {
     )
 
     Column(
-        modifier = Modifier.padding(horizontal = 24.dp)
+        modifier = modifier.padding(horizontal = 24.dp)
     ) {
         OutlinedTextField(
             value = ramenState.name,
@@ -95,7 +93,7 @@ fun InfoBody(ramenState: RamenState) {
 
 @Composable
 fun ShowDropdownMenu(ramenState: RamenState) {
-    var expanded by remember { mutableStateOf(false)}
+    var expanded by remember { mutableStateOf(false) }
 
     Text(
         text = "カテゴリー：${ramenState.category}",
@@ -106,17 +104,19 @@ fun ShowDropdownMenu(ramenState: RamenState) {
         expanded = expanded,
         onDismissRequest = { expanded = false }
     ) {
-        DropdownMenuItem(onClick = {
-            ramenState.category = "家系　"
-            expanded = false
-        }) {
-            Text(text = "家系")
-        }
-        DropdownMenuItem(onClick = {
-            ramenState.category = "二郎系"
-            expanded = false
-        }) {
-            Text(text = "二郎系")
-        }
+        DropdownMenuItem(
+            text = { Text(text = "家系") },
+            onClick = {
+                ramenState.category = "家系　"
+                expanded = false
+            }
+        )
+        DropdownMenuItem(
+            text = { Text(text = "二郎系") },
+            onClick = {
+                ramenState.category = "二郎系"
+                expanded = false
+            }
+        )
     }
 }

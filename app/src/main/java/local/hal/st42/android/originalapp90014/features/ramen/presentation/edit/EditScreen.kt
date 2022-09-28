@@ -1,8 +1,11 @@
 package local.hal.st42.android.originalapp90014.features.ramen.presentation.edit
 
-import androidx.compose.material.Scaffold
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import local.hal.st42.android.originalapp90014.common_component.InfoBody
@@ -12,6 +15,7 @@ import local.hal.st42.android.originalapp90014.features.ramen.viewmodel.MainView
 import local.hal.st42.android.originalapp90014.rememberRamenState
 import local.hal.st42.android.originalapp90014.util.initRamen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScreen(
     navController: NavController,
@@ -34,14 +38,16 @@ fun EditScreen(
     )
 
     Scaffold(
-        topBar = { ESAppBar(
-            navController = navController,
-            ramenState = ramenState,
-            vm = mainViewModel,
-            id = id,
-            registry = ramen.registryDate
-        ) }
+        topBar = {
+            ESAppBar(
+                navController = navController,
+                ramenState = ramenState,
+                vm = mainViewModel,
+                id = id,
+                registry = ramen.registryDate
+            )
+        }
     ) {
-        InfoBody(ramenState)
+        InfoBody(ramenState, Modifier.padding(it))
     }
 }
